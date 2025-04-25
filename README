@@ -50,5 +50,7 @@ cd ../..
 
 # Step 3 - Deploy the model Serving
 
-oc apply -k resources/model-server/components-serving
-dscinitialization.dscinitialization.opendatahub.io/default-dsci configured
+    oc apply -k resources/model-server/components-serving
+    
+    dscinitialization.dscinitialization.opendatahub.io/default-dsci configured
+
