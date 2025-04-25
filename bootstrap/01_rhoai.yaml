@@ -31,6 +31,12 @@ spec:
       - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
         path: resources/openshift-ai 
         targetRevision: HEAD  
+  ignoreDifferences:
+    - group: datasciencecluster.opendatahub.io
+      kind: DataScienceCluster
+      jsonPointers:
+        - /metadata/annotations/kubectl.kubernetes.io~1last-applied-configuration
+        - /spec/components/kserve/serving/ingressGateway/certificate/type
   syncPolicy:
     automated:
       prune: true
