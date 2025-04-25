@@ -8,4 +8,12 @@ clusterrolebinding.rbac.authorization.k8s.io/argocd-rbac-ca created
 subscription.operators.coreos.com/openshift-gitops-operator created
 
 // Install Openshift AI
-oc apply -f bootstrap/argocd 
+oc apply -f bootstrap/00_pre-requisites.yaml
+
+appproject.argoproj.io/pre-requisites created
+application.argoproj.io/pre-requisites created
+
+oc apply -f bootstrap/01_rhoai.yaml         
+
+appproject.argoproj.io/rhoai created
+application.argoproj.io/rhoai created

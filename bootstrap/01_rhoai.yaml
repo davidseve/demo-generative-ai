@@ -4,7 +4,7 @@ kind: AppProject
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-  name: pre-requisites
+  name: rhoai
   namespace: openshift-gitops
 spec:
   clusterResourceWhitelist:
@@ -21,16 +21,16 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-  name: pre-requisites
+  name: rhoai
   namespace: openshift-gitops
 spec:
   destination:
     server: https://kubernetes.default.svc
-  project: pre-requisites
+  project: rhoai
   sources:
       - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
-        path: resources/pre-requisites
-        targetRevision: HEAD
+        path: resources/openshift-ai 
+        targetRevision: HEAD  
   syncPolicy:
     automated:
       prune: true
