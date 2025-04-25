@@ -18,6 +18,3 @@ resources:
   
   # Support for authentication of server models
   - operator-authorino
-
-# Minio installation
-  - minio
