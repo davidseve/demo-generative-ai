@@ -9,12 +9,12 @@ labels:
 resources:
 
   # Support for GPU Acceleration
-  - operator-nfd
-  - operator-nvidia-gpu
+#  - operator-nfd
+#  - operator-nvidia-gpu
 
   # KServe Installation for Single-model server
   - operator-serverless
   - operator-servicemesh
   
   # Support for authentication of server models
-  # - operator-authorino
+  - operator-authorino
