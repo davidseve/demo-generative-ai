@@ -50,7 +50,5 @@ cd ../..
 
 # Step 3 - Deploy the model Serving
 
-oc apply -f bootstrap/03_model-serving.yaml 
-
-appproject.argoproj.io/model-serving created
-application.argoproj.io/model-serving created
+oc apply -k resources/model-server/components-serving
+dscinitialization.dscinitialization.opendatahub.io/default-dsci configured

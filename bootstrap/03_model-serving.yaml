@@ -29,7 +29,10 @@ spec:
   project: model-serving
   sources:
       - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
-        path: resources/model-server
+        path: resources/openshift-servicemesh
+        targetRevision: HEAD
+      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+        path: resources/openshift-serverless
         targetRevision: HEAD
   syncPolicy:
     automated:
