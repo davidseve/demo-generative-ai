@@ -1,0 +1,11 @@
+# Step 1 - Pre Requisites
+
+// First Install ArgoCD
+oc apply -k bootstrap/argocd 
+
+namespace/openshift-gitops created
+clusterrolebinding.rbac.authorization.k8s.io/argocd-rbac-ca created
+subscription.operators.coreos.com/openshift-gitops-operator created
+
+// Install Openshift AI
+oc apply -f bootstrap/argocd 

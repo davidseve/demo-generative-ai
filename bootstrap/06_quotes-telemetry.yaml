@@ -1,0 +1,42 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  name: quotes-telemetry
+  namespace: openshift-gitops
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  name: quotes-telemetry
+  namespace: openshift-gitops
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  project: quotes-telemetry
+  sources:
+      - repoURL: 'https://github.com/Everything-is-Code/quotes-app.git'
+        targetRevision: HEAD
+        path: resources/quotes-telemetry/quotes-chart
+        helm:
+          valueFiles:
+            - values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
