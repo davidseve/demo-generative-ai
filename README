@@ -54,3 +54,23 @@ cd ../..
     
     dscinitialization.dscinitialization.opendatahub.io/default-dsci configured
 
+# Step 4 - Deploy the llama model
+
+Deploy custom-model-serving-runtime
+
+Create the podman-ai-lab-rag-project data science project
+
+Fill the data: 
+
+    Model name = mistral7b
+    Serving runtime = LlamaCPP
+    Model framework = any
+    Model server size = Medium
+    Select New data connection
+    Name = models
+    Access key = minio
+    Secret key = minio123
+    Endpoint = Your Minio API URL
+    Region = us-east-1
+    Bucket = models
+    Path = mistral7b
