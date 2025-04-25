@@ -1,19 +1,56 @@
 # Step 1 - Pre Requisites
 
-// First Install ArgoCD
-oc apply -k bootstrap/argocd 
+First Install ArgoCD
+    
+    oc apply -k bootstrap/argocd 
 
-namespace/openshift-gitops created
-clusterrolebinding.rbac.authorization.k8s.io/argocd-rbac-ca created
-subscription.operators.coreos.com/openshift-gitops-operator created
+    namespace/openshift-gitops created
+    clusterrolebinding.rbac.authorization.k8s.io/argocd-rbac-ca created
+    subscription.operators.coreos.com/openshift-gitops-operator created
 
-// Install Openshift AI
-oc apply -f bootstrap/00_pre-requisites.yaml
+Install all the needed operators:
+    
+    oc apply -f bootstrap/00_pre-requisites.yaml
 
-appproject.argoproj.io/pre-requisites created
-application.argoproj.io/pre-requisites created
+    appproject.argoproj.io/pre-requisites created
+    application.argoproj.io/pre-requisites created
 
-oc apply -f bootstrap/01_rhoai.yaml         
+Install Openshift AI:
 
-appproject.argoproj.io/rhoai created
-application.argoproj.io/rhoai created
+    oc apply -f bootstrap/01_rhoai.yaml         
+
+    appproject.argoproj.io/rhoai created
+    application.argoproj.io/rhoai created
+
+
+Finally install Minio:
+
+    oc apply -f bootstrap/02_minio.yaml        
+
+    appproject.argoproj.io/minio created
+    application.argoproj.io/minio created
+
+# Step 2 - Add the Certificates
+
+Get the name of the ingress cert:
+
+    oc get secrets -n openshift-ingress | grep cert
+
+Extract from the secret:
+
+    oc extract secret/<CERT_SECRET_FROM_ABOVE> -n openshift-ingress --to=aux/ingress-certs --confirm
+
+Finally update the certs:
+
+cd aux/ingress-certs 
+
+oc create secret generic knative-serving-cert -n istio-system --from-file=. --dry-run=client -o yaml | oc apply -f -
+
+cd ../..
+
+# Step 3 - Deploy the model Serving
+
+oc apply -f bootstrap/03_model-serving.yaml 
+
+appproject.argoproj.io/model-serving created
+application.argoproj.io/model-serving created
