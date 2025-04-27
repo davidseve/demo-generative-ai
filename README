@@ -120,3 +120,6 @@ You can get the values executing the following command:
 
 Note: You can delete the elastic_pass.txt file that you got the password from after you add it to the environment variable.
 
+Now we need to log in to our workbench using the BUTTON on the Openshift-AI UI.
+
+curl -k -u elastic:75od146Ee14f3hvifE1S9TUK https://172.30.47.209:9200
