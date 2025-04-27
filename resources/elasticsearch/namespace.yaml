@@ -4,5 +4,7 @@ metadata:
   name: elastic-vectordb
   annotations:
     openshift.io/node-selector: ""
+    argocd.argoproj.io/sync-wave: "-15"
   labels:
     openshift.io/cluster-monitoring: "true"
+    

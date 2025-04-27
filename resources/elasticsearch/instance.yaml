@@ -3,6 +3,8 @@ kind: Elasticsearch
 metadata:
   name: elasticsearch-sample
   namespace: elastic-vectordb
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   nodeSets:
     - config:
