@@ -91,3 +91,32 @@ Now deploy the Model, start by filling the data:
     Bucket = models
     Path = mistral7b
 
+We'll now create a workbench where we can upload a Jupyter notebook to ingest data into the Elasticsearch vector database, we are going to do this in our Project (podman-ai-lab-rag-project)
+
+    Select Create a workbench
+
+Use the following values:
+
+    elastic-vectordb-workbench
+    Standard Data Science 
+    Medium size
+
+Add the following Enviroment Varibales using ConfigMap:
+
+    CONNECTION_STRING: <Cluster-IP>:9200
+
+
+You can get the values executing the following command:
+
+    oc get service elasticsearch-sample-es-http -n elastic-vectordb
+
+The other Enviroment Varibales is:
+
+    PASSWORD: <Elasticsearch Password>
+
+You can get the values executing the following command:
+
+    oc get secret elasticsearch-sample-es-elastic-user -n elastic-vectordb -o jsonpath="{.data['elastic']}" | base64 -d > elastic_pass.txt
+
+Note: You can delete the elastic_pass.txt file that you got the password from after you add it to the environment variable.
+
