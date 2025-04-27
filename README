@@ -23,12 +23,18 @@ Install Openshift AI:
     application.argoproj.io/rhoai created
 
 
-Finally install Minio:
+Now we deploy Minio for our S3 Storage:
 
     oc apply -f bootstrap/02_minio.yaml        
 
     appproject.argoproj.io/minio created
     application.argoproj.io/minio created
+
+And finally we deploy the Elasticsearch for our vector database:
+
+    oc apply -f bootstrap/04_elasticsearch.yaml
+
+    application.argoproj.io/elasticsearch created
 
 # Step 2 - Add the Certificates
 
@@ -75,6 +81,7 @@ Now deploy the Model, start by filling the data:
     Model framework = any
     Deployment Mode = Standard
     Model server size = Medium
+    Select the add external Route
     Select Create Connection => S3 Compatible
     Name = models
     Access key = minio
@@ -83,3 +90,4 @@ Now deploy the Model, start by filling the data:
     Region = us-east-1
     Bucket = models
     Path = mistral7b
+
