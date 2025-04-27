@@ -42,11 +42,11 @@ Extract from the secret:
 
 Finally update the certs:
 
-cd aux/ingress-certs 
+    cd aux/ingress-certs 
 
-oc create secret generic knative-serving-cert -n istio-system --from-file=. --dry-run=client -o yaml | oc apply -f -
+    oc create secret generic knative-serving-cert -n istio-system --from-file=. --dry-run=client -o yaml | oc apply -f -
 
-cd ../..
+    cd ../..
 
 # Step 3 - Deploy the model Serving
 
@@ -60,13 +60,22 @@ Deploy custom-model-serving-runtime
 
 Create the podman-ai-lab-rag-project data science project
 
-Fill the data: 
+Add serving runtime from the UI:
+
+BUTTON: Add serving runtime
+
+Select: Single-model serving platform
+
+Add the: ./resources/custom-model-serving-runtime/llamacpp-runtime-custom.yaml
+
+Now deploy the Model, start by filling the data: 
 
     Model name = mistral7b
     Serving runtime = LlamaCPP
     Model framework = any
+    Deployment Mode = Standard
     Model server size = Medium
-    Select New data connection
+    Select Create Connection => S3 Compatible
     Name = models
     Access key = minio
     Secret key = minio123

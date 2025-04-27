@@ -17,9 +17,9 @@ spec:
       name: kserve-container
       ports:
         - containerPort: 8001
-          name: http1
-          protocol: TCP
-          hostPort: 8001
+          # name: http1
+          # protocol: TCP
+          # hostPort: 8001
       securityContext:
         runAsNonRoot: true
   multiModel: false
