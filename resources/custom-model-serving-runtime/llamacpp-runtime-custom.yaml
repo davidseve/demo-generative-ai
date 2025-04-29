@@ -8,7 +8,7 @@ metadata:
   name: llamacpp
 spec:
   containers:
-    - image: quay.io/alexonoliveira/llamacpp_python:latest
+    - image: quay.io/ilago/llamacpp:latest
       env:
         - name: MODEL_PATH
           value: /mnt/models
