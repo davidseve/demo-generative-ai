@@ -29,7 +29,7 @@ spec:
   project: elastic-granite-chat
   sources:
       - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
-        path: resources/chatbot-granite
+        path: resources/chatbot/granite
         targetRevision: HEAD
   syncPolicy:
     automated:
