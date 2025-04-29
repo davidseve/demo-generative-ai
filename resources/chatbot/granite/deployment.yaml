@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: elastic-granite-chat
-          image: 'podman pull quay.io/ilago/elastic-granite-chat'
+          image: 'quay.io/ilago/elastic-granite-chat'
           ports:
             - containerPort: 8080
               protocol: TCP
