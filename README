@@ -121,31 +121,3 @@ You can get the values executing the following command:
 Note: You can delete the elastic_pass.txt file that you got the password from after you add it to the environment variable.
 
 Now we need to log in to our workbench using the BUTTON on the Openshift-AI UI.
-
-curl -k -u elastic:2Bu30V3uvw2x0q24WIXG2M0J https://172.30.186.138:9200
-
-curl --location 'https://mistral7b-podman-ai-lab-rag-project.apps.cluster-vgdrd.vgdrd.sandbox3146.opentlc.com/v1/chat/completions' --header 'Content-Type: application/json' --data '{
-"messages": [
-    {
-      "content": "You are a helpful assistant.",
-      "role": "system"
-    },
-    {
-      "content": "How large is the capital of France?",
-      "role": "user"
-    }
-  ]
-}'
-
-curl --location 'http://mistral7b-predictor.podman-ai-lab-rag-project.svc.cluster.local:8001/v1/chat/completions' --header 'Content-Type: application/json' --data '{
-"messages": [
-    {
-      "content": "You are a helpful assistant.",
-      "role": "system"
-    },
-    {
-      "content": "How large is the capital of France?",
-      "role": "user"
-    }
-  ]
-}'
