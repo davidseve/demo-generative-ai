@@ -1,29 +1,29 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: elastic-vectordb-chat
-  namespace: elastic-vectordb-chat
+  name: elastic-granite-chat
+  namespace: elastic-granite-chat
   labels:
-    app: elastic-vectordb-chat
-    app.kubernetes.io/component: elastic-vectordb-chat
-    app.kubernetes.io/instance: elastic-vectordb-chat
-    app.kubernetes.io/name: elastic-vectordb-chat
-    app.kubernetes.io/part-of: elastic-vectordb-chat-app
-    app.openshift.io/runtime-namespace: elastic-vectordb-chat
+    app: elastic-granite-chat
+    app.kubernetes.io/component: elastic-granite-chat
+    app.kubernetes.io/instance: elastic-granite-chat
+    app.kubernetes.io/name: elastic-granite-chat
+    app.kubernetes.io/part-of: elastic-granite-chat-app
+    app.openshift.io/runtime-namespace: elastic-granite-chat
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: elastic-vectordb-chat
+      app: elastic-granite-chat
   template:
     metadata:
       labels:
-        app: elastic-vectordb-chat
-        deployment: elastic-vectordb-chat
+        app: elastic-granite-chat
+        deployment: elastic-granite-chat
     spec:
       containers:
-        - name: elastic-vectordb-chat
-          image: 'quay.io/jhurlocker/elastic-vectordb-chat'
+        - name: elastic-granite-chat
+          image: 'podman pull quay.io/ilago/elastic-granite-chat'
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -56,14 +56,14 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: elastic-vectordb-chat
-  namespace: elastic-vectordb-chat
+  name: elastic-granite-chat
+  namespace: elastic-granite-chat
   labels:
-    app: elastic-vectordb-chat
-    app.kubernetes.io/component: elastic-vectordb-chat
-    app.kubernetes.io/instance: elastic-vectordb-chat
-    app.kubernetes.io/name: elastic-vectordb-chat
-    app.kubernetes.io/part-of: elastic-vectordb-chat-app
+    app: elastic-granite-chat
+    app.kubernetes.io/component: elastic-granite-chat
+    app.kubernetes.io/instance: elastic-granite-chat
+    app.kubernetes.io/name: elastic-granite-chat
+    app.kubernetes.io/part-of: elastic-granite-chat-app
     app.openshift.io/runtime-version: latest
 spec:
   ipFamilies:
@@ -82,27 +82,27 @@ spec:
   ipFamilyPolicy: SingleStack
   sessionAffinity: None
   selector:
-    app: elastic-vectordb-chat
-    deployment: elastic-vectordb-chat
+    app: elastic-granite-chat
+    deployment: elastic-granite-chat
 ---
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: elastic-vectordb-chat
-  namespace: elastic-vectordb-chat
+  name: elastic-granite-chat
+  namespace: elastic-granite-chat
   labels:
-    app: elastic-vectordb-chat
-    app.kubernetes.io/component: elastic-vectordb-chat
-    app.kubernetes.io/instance: elastic-vectordb-chat
-    app.kubernetes.io/name: elastic-vectordb-chat
-    app.kubernetes.io/part-of: elastic-vectordb-chat-app
+    app: elastic-granite-chat
+    app.kubernetes.io/component: elastic-granite-chat
+    app.kubernetes.io/instance: elastic-granite-chat
+    app.kubernetes.io/name: elastic-granite-chat
+    app.kubernetes.io/part-of: elastic-granite-chat-app
     app.openshift.io/runtime-version: latest
   annotations:
     openshift.io/host.generated: 'true'
 spec:
   to:
     kind: Service
-    name: elastic-vectordb-chat
+    name: elastic-granite-chat
     weight: 100
   port:
     targetPort: 8501-tcp

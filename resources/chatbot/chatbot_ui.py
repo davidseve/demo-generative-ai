@@ -56,7 +56,7 @@ def get_models():
     except:
         return None
 
-st.title("💬 From Podman AI Lab to OpenShift AI - Chat with RHOAI documentation")  
+st.title("Chat with 🪨Granite🪨 about OpenShift AI documentation")  
 if "messages" not in st.session_state:
     st.session_state["messages"] = [{"role": "assistant", 
                                      "content": "How can I help you?"}]
@@ -103,12 +103,15 @@ db = ElasticsearchStore.from_documents(
     es_connection=es,
 )
 
-template="""<s>[INST] <<SYS>>
-You are a helpful, respectful and honest assistant.
-You will be given a question you need to answer, and a context to provide you with information. You must answer the question based as much as possible on this context.
-Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.
+template = """<s>[INST] <<SYS>>
+You are an intelligent, honest, and reliable AI assistant.
 
-If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
+You will be provided with a **question** and a supporting **context**. Your task is to generate the most accurate and helpful response possible based only on the information in the context. 
+- If the context does not contain enough information to answer, clearly state that you don't have sufficient data.
+- If the question is unclear, nonsensical, or logically inconsistent, explain the issue instead of guessing or providing incorrect information.
+- Never generate content that is harmful, unethical, biased, or false.
+
+Always strive to be concise, informative, and respectful in your replies.
 <</SYS>>
 
 Question: {question}
@@ -141,14 +144,14 @@ if prompt := st.chat_input():
 
     # Displaying the Results (Modified)
     if response["source_documents"]:
-        links = []
+        links = set()
         for doc in response["source_documents"]:
-            links.extend(extract_links(doc.metadata["source"]))
+            links.update(extract_links(doc.metadata["source"]))
 
         # Concatenate links and the main result
         link_text = ""
         if links:
-            link_text = "\n\n**Relevant Links:**\n" + "\n".join([f"- {link}" for link in links])
+            link_text = "\n\n**Relevant Links:**\n" + "\n".join([f"- {link}" for link in sorted(links)])
 
         # Combine the result and link text
         combined_message = response["result"] + link_text
