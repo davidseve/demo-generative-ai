@@ -1,3 +1,4 @@
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -10,6 +11,8 @@ metadata:
     app.kubernetes.io/name: elastic-granite-chat
     app.kubernetes.io/part-of: elastic-granite-chat-app
     app.openshift.io/runtime-namespace: elastic-granite-chat
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   replicas: 1
   selector:
@@ -52,61 +55,3 @@ spec:
       maxSurge: 25%
   revisionHistoryLimit: 10
   progressDeadlineSeconds: 600
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: elastic-granite-chat
-  namespace: elastic-granite-chat
-  labels:
-    app: elastic-granite-chat
-    app.kubernetes.io/component: elastic-granite-chat
-    app.kubernetes.io/instance: elastic-granite-chat
-    app.kubernetes.io/name: elastic-granite-chat
-    app.kubernetes.io/part-of: elastic-granite-chat-app
-    app.openshift.io/runtime-version: latest
-spec:
-  ipFamilies:
-    - IPv4
-  ports:
-    - name: 8080-tcp
-      protocol: TCP
-      port: 8080
-      targetPort: 8080
-    - name: 8501-tcp
-      protocol: TCP
-      port: 8501
-      targetPort: 8501
-  internalTrafficPolicy: Cluster
-  type: ClusterIP
-  ipFamilyPolicy: SingleStack
-  sessionAffinity: None
-  selector:
-    app: elastic-granite-chat
-    deployment: elastic-granite-chat
----
-kind: Route
-apiVersion: route.openshift.io/v1
-metadata:
-  name: elastic-granite-chat
-  namespace: elastic-granite-chat
-  labels:
-    app: elastic-granite-chat
-    app.kubernetes.io/component: elastic-granite-chat
-    app.kubernetes.io/instance: elastic-granite-chat
-    app.kubernetes.io/name: elastic-granite-chat
-    app.kubernetes.io/part-of: elastic-granite-chat-app
-    app.openshift.io/runtime-version: latest
-  annotations:
-    openshift.io/host.generated: 'true'
-spec:
-  to:
-    kind: Service
-    name: elastic-granite-chat
-    weight: 100
-  port:
-    targetPort: 8501-tcp
-  tls:
-    termination: edge
-    insecureEdgeTerminationPolicy: Redirect
-  wildcardPolicy: None
