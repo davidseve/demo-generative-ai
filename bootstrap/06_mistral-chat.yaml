@@ -4,7 +4,7 @@ kind: AppProject
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-  name: quotes-telemetry
+  name: elastic-mistral-chat
   namespace: openshift-gitops
 spec:
   clusterResourceWhitelist:
@@ -20,23 +20,25 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
-  name: quotes-telemetry
+    argocd.argoproj.io/sync-wave: "3"
+  name: elastic-mistral-chat
   namespace: openshift-gitops
 spec:
   destination:
     server: https://kubernetes.default.svc
-  project: quotes-telemetry
+  project: elastic-mistral-chat
   sources:
-      - repoURL: 'https://github.com/Everything-is-Code/quotes-app.git'
+      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+        path: resources/chatbot/mistral
         targetRevision: HEAD
-        path: resources/quotes-telemetry/quotes-chart
-        helm:
-          valueFiles:
-            - values.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: elastic-mistral-chat
+      namespace: elastic-mistral-chat
+      jsonPointers:
+        - /spec/template/spec/containers/0/env
