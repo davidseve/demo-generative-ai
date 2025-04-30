@@ -1,0 +1,57 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: elastic-mistral-chat
+  namespace: elastic-mistral-chat
+  labels:
+    app: elastic-mistral-chat
+    app.kubernetes.io/component: elastic-mistral-chat
+    app.kubernetes.io/instance: elastic-mistral-chat
+    app.kubernetes.io/name: elastic-mistral-chat
+    app.kubernetes.io/part-of: elastic-mistral-chat-app
+    app.openshift.io/runtime-namespace: elastic-mistral-chat
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elastic-mistral-chat
+  template:
+    metadata:
+      labels:
+        app: elastic-mistral-chat
+        deployment: elastic-mistral-chat
+    spec:
+      containers:
+        - name: elastic-mistral-chat
+          image: 'quay.io/ilago/elastic-mistral-chat'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8501
+              protocol: TCP
+          env:
+            - name: MODEL_ENDPOINT
+              value: '<OPENSHIFT_AI_MODEL_INFERENCE_ENDPOINT>'
+            - name: ELASTIC_URL
+              value: 'https://<YOUR_ELASTICSEARCH_SERVICE_URL>:9200'
+            - name: ELASTIC_PASS
+              value: '<YOUR_ELASTICSEARCH_PASSWORD>'
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

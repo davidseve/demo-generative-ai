@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: elastic-mistral-chat
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"

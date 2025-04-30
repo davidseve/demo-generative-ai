@@ -1,0 +1,34 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: elastic-mistral-chat
+  namespace: elastic-mistral-chat
+  labels:
+    app: elastic-mistral-chat
+    app.kubernetes.io/component: elastic-mistral-chat
+    app.kubernetes.io/instance: elastic-mistral-chat
+    app.kubernetes.io/name: elastic-mistral-chat
+    app.kubernetes.io/part-of: elastic-mistral-chat-app
+    app.openshift.io/runtime-version: latest
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: 8501-tcp
+      protocol: TCP
+      port: 8501
+      targetPort: 8501
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: elastic-mistral-chat
+    deployment: elastic-mistral-chat

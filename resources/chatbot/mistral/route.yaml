@@ -1,0 +1,27 @@
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: elastic-mistral-chat
+  namespace: elastic-mistral-chat
+  labels:
+    app: elastic-mistral-chat
+    app.kubernetes.io/component: elastic-mistral-chat
+    app.kubernetes.io/instance: elastic-mistral-chat
+    app.kubernetes.io/name: elastic-mistral-chat
+    app.kubernetes.io/part-of: elastic-mistral-chat-app
+    app.openshift.io/runtime-version: latest
+  annotations:
+    openshift.io/host.generated: 'true'
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  to:
+    kind: Service
+    name: elastic-mistral-chat
+    weight: 100
+  port:
+    targetPort: 8501-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
