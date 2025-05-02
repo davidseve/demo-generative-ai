@@ -69,7 +69,7 @@ def memory():
     memory = ConversationBufferWindowMemory(return_messages=True,k=10)
     return memory
 
-model_name = "" 
+model_name = "granite" 
 
 prompt = ChatPromptTemplate.from_messages([
     ("system", "You are world class technical advisor."),
@@ -117,7 +117,7 @@ Always strive to be concise, informative, and respectful in your replies.
 Question: {question}
 Context: {context} [/INST]
 """
-QA_CHAIN_PROMPT = PromptTemplate.from_template(template)
+QA_CHAIN_PROMPT = ChatPromptTemplate.from_template(template)
 
 chain = RetrievalQA.from_chain_type(llm,
                                 retriever=db.as_retriever(search_type="similarity_score_threshold", search_kwargs={"k": 4, "score_threshold": 0.2 }),
@@ -146,13 +146,16 @@ if prompt := st.chat_input():
     if response["source_documents"]:
         links = set()
         for doc in response["source_documents"]:
-            links.update(extract_links(doc.metadata["source"]))
+            source = doc.metadata.get("source", "")
+            if source.startswith("http"):
+                links.add(source)
 
         # Concatenate links and the main result
         link_text = ""
         if links:
-            link_text = "\n\n**Relevant Links:**\n" + "\n".join([f"- {link}" for link in sorted(links)])
-
+            link_text = "\n\n**Relevant Links:**\n" + "\n".join(
+                [f"- [{link}]({link})" for link in sorted(links)]
+            )
         # Combine the result and link text
         combined_message = response["result"] + link_text
         st.chat_message("assistant").markdown(combined_message)

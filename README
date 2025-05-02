@@ -54,27 +54,64 @@ Finally update the certs:
 
     cd ../..
 
-# Step 3 - Deploy the model Serving
+# Step 3 - Download and add the models to MINIO
+
+Download the models for Granite and Mistral, for IBM Granite go here:
+
+    https://huggingface.co/ibm-research/granite-3.2-8b-instruct-GGUF
+
+For Mistral go here:
+
+    https://huggingface.co/TheBloke/Mistral-7B-OpenOrca-GGUF
+
+We can also download them from the Podman AI, for that we have to first install podman destktop:
+
+        https://podman-desktop.io/
+
+Then we add the AI Lab Plugin:
+
+    https://podman-desktop.io/docs/ai-lab
+
+Then we have to go to the AI Lab Plugin => Catalog and then we decide which one we want to download:
+
+![Podman AI Lab](/resources/images/01_podman-ai-lab.png)
+
+
+We create the paths for granite3b and mistral7b:
+
+![Create Paths](/resources/images/03_create-paths.png)
+
+![Paths Created](/resources/images/04_paths-created.png)
+
+Once we have the images on our local machine we can upload them to Minio, for this we need to get to the bucket we made earlier (models) and the pick the folder for the model we want to upload and click upload find it in our local machine and upload it:
+
+
+![Minio Upload>](/resources/images/02_minio-upload.png)
+
+
+
+# Step 4 - Deploy the model Serving
+
+First we update the Data Science Cluster (DSC):
 
     oc apply -k resources/model-server/components-serving
     
     dscinitialization.dscinitialization.opendatahub.io/default-dsci configured
 
-# Step 4 - Deploy the llama model
 
-Deploy custom-model-serving-runtime
+Deploy custom-model-serving-runtime for this we need to create the podman-ai-lab-rag-project 
 
-Create the podman-ai-lab-rag-project data science project
+    data science project
 
 Add serving runtime from the UI:
 
-BUTTON: Add serving runtime
+    BUTTON: Add serving runtime
 
-Select: Single-model serving platform
+    Select: Single-model serving platform
 
-Add the: ./resources/custom-model-serving-runtime/llamacpp-runtime-custom.yaml
+    Add the: ./resources/custom-model-serving-runtime/llamacpp-runtime-custom.yaml
 
-Now deploy the Model, start by filling the data: 
+Now deploy the Mistral Model, start by filling the data: 
 
     Model name = mistral7b
     Serving runtime = LlamaCPP
@@ -87,9 +124,25 @@ Now deploy the Model, start by filling the data:
     Access key = minio
     Secret key = minio123
     Endpoint = Your Minio API URL
-    Region = us-east-1
     Bucket = models
     Path = mistral7b
+
+And finally we deploy the Granite Model, start by filling the data:
+
+    Model name = granite3b
+    Serving runtime = LlamaCPP    
+    Model framework = any    
+    Deployment Mode = Standard    
+    Model server size = Medium    
+    Select the add external Route    
+    Select Create Connection => S3 Compatible    
+    Name = models    
+    Access key = minio    
+    Secret key = minio123    
+    Endpoint = Your Minio API URL    
+    Bucket = models
+    Path = granite3b
+
 
 We'll now create a workbench where we can upload a Jupyter notebook to ingest data into the Elasticsearch vector database, we are going to do this in our Project (podman-ai-lab-rag-project)
 
