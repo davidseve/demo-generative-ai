@@ -1,40 +1,45 @@
 # Step 1 - Pre Requisites
 
-First Install ArgoCD
+First Install ArgoCD using the following command:
     
     oc apply -k bootstrap/argocd 
 
+```
     namespace/openshift-gitops created
     clusterrolebinding.rbac.authorization.k8s.io/argocd-rbac-ca created
     subscription.operators.coreos.com/openshift-gitops-operator created
+```
 
 Install all the needed operators:
     
     oc apply -f bootstrap/00_pre-requisites.yaml
-
+```
     appproject.argoproj.io/pre-requisites created
     application.argoproj.io/pre-requisites created
+```
 
 Install Openshift AI:
 
     oc apply -f bootstrap/01_rhoai.yaml         
-
+```
     appproject.argoproj.io/rhoai created
     application.argoproj.io/rhoai created
-
+```
 
 Now we deploy Minio for our S3 Storage:
 
     oc apply -f bootstrap/02_minio.yaml        
-
+```
     appproject.argoproj.io/minio created
     application.argoproj.io/minio created
+```
 
 And finally we deploy the Elasticsearch for our vector database:
 
     oc apply -f bootstrap/04_elasticsearch.yaml
-
+```
     application.argoproj.io/elasticsearch created
+```
 
 # Step 2 - Add the Certificates
 
@@ -94,9 +99,9 @@ Once we have the images on our local machine we can upload them to Minio, for th
 First we update the Data Science Cluster (DSC):
 
     oc apply -k resources/model-server/components-serving
-    
+```    
     dscinitialization.dscinitialization.opendatahub.io/default-dsci configured
-
+```
 
 Deploy custom-model-serving-runtime for this we need to create the data science project "demo-generative-ai" we can do it from the graphical interface or from the command line:
 
@@ -113,7 +118,7 @@ Add serving runtime from the UI:
     Add the: ./resources/custom-model-serving-runtime/llamacpp-runtime-custom.yaml
 
 Now deploy the Mistral Model, start by filling the data: 
-
+```
     Model name = mistral7b
     Serving runtime = LlamaCPP
     Model framework = any
@@ -127,9 +132,9 @@ Now deploy the Mistral Model, start by filling the data:
     Endpoint = Your Minio API URL
     Bucket = models
     Path = mistral7b
-
+```
 And finally we deploy the Granite Model, start by filling the data:
-
+```
     Model name = granite3b
     Serving runtime = LlamaCPP    
     Model framework = any    
@@ -143,7 +148,7 @@ And finally we deploy the Granite Model, start by filling the data:
     Endpoint = Your Minio API URL    
     Bucket = models
     Path = granite3b
-
+```
 
 We'll now create a workbench where we can upload a Jupyter notebook to ingest data into the Elasticsearch vector database, we are going to do this in our Project (demo-generative-ai)
 
