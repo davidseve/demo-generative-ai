@@ -103,11 +103,11 @@ Deploy custom-model-serving-runtime for this we need to create the data science 
 
 Add serving runtime from the UI:
 
-    BUTTON: Add serving runtime
+1.   BUTTON: Add serving runtime
 
-    Select: Single-model serving platform
+2.   Select: Single-model serving platform
 
-    Add the: ./resources/custom-model-serving-runtime/llamacpp-runtime-custom.yaml
+3.   Add the: ./resources/custom-model-serving-runtime/llamacpp-runtime-custom.yaml
 
 Now deploy the Mistral Model, start by filling the data: 
 >   Model name = mistral7b
