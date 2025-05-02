@@ -97,7 +97,7 @@ First we update the Data Science Cluster (DSC):
 
 Deploy custom-model-serving-runtime for this we need to create the data science project "demo-generative-ai" we can do it from the graphical interface or from the command line:
 
-    Data science project => Create Project => Name = demo-generative-ai => Create
+>    Data science project => Create Project => Name = demo-generative-ai => Create
 
 ![Create Data Science Project](/resources/images/05_create-dsp.png)
 
