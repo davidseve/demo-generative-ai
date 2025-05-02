@@ -74,8 +74,7 @@ Then we add the AI Lab Plugin:
 
 Then we have to go to the AI Lab Plugin => Catalog and then we decide which one we want to download:
 
-![Podman AI Lab](/resources/images/01_podman-ai-lab.png)
-
+[Podman AI Lab](/resources/images/01_podman-ai-lab.png)
 
 We create the paths for granite3b and mistral7b:
 
