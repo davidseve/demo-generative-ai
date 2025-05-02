@@ -79,9 +79,9 @@ Then we have to go to the AI Lab Plugin => Catalog and then we decide which one 
 
 We create the paths for granite3b and mistral7b:
 
-![Create Paths](/resources/images/03_create-paths.png)
+![Create Paths](/resources/images/03_minio-create-path.png)
 
-![Paths Created](/resources/images/04_paths-created.png)
+![Paths Created](/resources/images/04_minio-paths-x2.png)
 
 Once we have the images on our local machine we can upload them to Minio, for this we need to get to the bucket we made earlier (models) and the pick the folder for the model we want to upload and click upload find it in our local machine and upload it:
 
@@ -99,9 +99,11 @@ First we update the Data Science Cluster (DSC):
     dscinitialization.dscinitialization.opendatahub.io/default-dsci configured
 
 
-Deploy custom-model-serving-runtime for this we need to create the podman-ai-lab-rag-project 
+Deploy custom-model-serving-runtime for this we need to create the data science project "demo-generative-ai" we can do it from the graphical interface or from the command line:
 
-    data science project
+    Data science project => Create Project => Name = demo-generative-ai => Create
+
+![Create Data Science Project](/resources/images/05_create-dsp.png)
 
 Add serving runtime from the UI:
 
@@ -117,7 +119,7 @@ Now deploy the Mistral Model, start by filling the data:
     Serving runtime = LlamaCPP
     Model framework = any
     Deployment Mode = Standard
-    Model server size = Medium
+    Model server size = Large
     Select the add external Route
     Select Create Connection => S3 Compatible
     Name = models
@@ -133,7 +135,7 @@ And finally we deploy the Granite Model, start by filling the data:
     Serving runtime = LlamaCPP    
     Model framework = any    
     Deployment Mode = Standard    
-    Model server size = Medium    
+    Model server size = Large    
     Select the add external Route    
     Select Create Connection => S3 Compatible    
     Name = models    
@@ -144,7 +146,7 @@ And finally we deploy the Granite Model, start by filling the data:
     Path = granite3b
 
 
-We'll now create a workbench where we can upload a Jupyter notebook to ingest data into the Elasticsearch vector database, we are going to do this in our Project (podman-ai-lab-rag-project)
+We'll now create a workbench where we can upload a Jupyter notebook to ingest data into the Elasticsearch vector database, we are going to do this in our Project (demo-generative-ai)
 
     Select Create a workbench
 

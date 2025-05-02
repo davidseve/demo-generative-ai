@@ -1,0 +1,21 @@
+kind: Project
+apiVersion: project.openshift.io/v1
+metadata:
+  name: demo-generative-ai
+  labels:
+    kubernetes.io/metadata.name: demo-generative-ai
+    modelmesh-enabled: 'false'
+    opendatahub.io/dashboard: 'true'
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: latest
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: latest
+  annotations:
+    openshift.io/description: ''
+    openshift.io/display-name: demo-generative-ai
+    openshift.io/node-selector: beta.kubernetes.io/instance-type=m6i.4xlarge
+    openshift.io/sa.scc.supplemental-groups: 1000860000/10000
+    openshift.io/sa.scc.uid-range: 1000860000/10000
+spec:
+  finalizers:
+    - kubernetes
