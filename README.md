@@ -101,15 +101,23 @@ Deploy custom-model-serving-runtime for this we need to create the data science 
 
 ![Create Data Science Project](/resources/images/05_create-dsp.png)
 
-Add serving runtime from the UI:
+We have to deploy the serving runtime from the UI:
 
-1.   BUTTON: Add serving runtime
+*   Settings => Serving runtimes => Add serving runtime 
 
-2.   Select: Single-model serving platform
+![Creating Serving Runtimes](resources/images/06_serving-runtimes.png)
 
-3.   Add the: ./resources/custom-model-serving-runtime/llamacpp-runtime-custom.yaml
+*   Select the model serving platforms this runtime supports
+> Single-model serving platform
+*   Select the API protocol this runtime supports
+>  Rest
+
+*   Upload the yaml file from: ./resources/custom-model-serving-runtime/llamacpp-runtime-custom.yaml
+
+![Adding Llama Serving Runtime](resources/images/07_adding-llama-runtime.png)
 
 Now deploy the Mistral Model, start by filling the data: 
+
 >   Model name = mistral7b
     Serving runtime = LlamaCPP
     Model framework = any
@@ -125,6 +133,7 @@ Now deploy the Mistral Model, start by filling the data:
     Path = mistral7b
 
 And finally we deploy the Granite Model, start by filling the data:
+
 >   Model name = granite3b
     Serving runtime = LlamaCPP    
     Model framework = any    
