@@ -4,42 +4,36 @@ First Install ArgoCD using the following command:
     
     oc apply -k bootstrap/argocd 
 
-```
-    namespace/openshift-gitops created
+>    namespace/openshift-gitops created
     clusterrolebinding.rbac.authorization.k8s.io/argocd-rbac-ca created
     subscription.operators.coreos.com/openshift-gitops-operator created
-```
 
 Install all the needed operators:
     
     oc apply -f bootstrap/00_pre-requisites.yaml
-```
+
+>
     appproject.argoproj.io/pre-requisites created
     application.argoproj.io/pre-requisites created
-```
 
 Install Openshift AI:
 
     oc apply -f bootstrap/01_rhoai.yaml         
-```
+>
     appproject.argoproj.io/rhoai created
     application.argoproj.io/rhoai created
-```
 
 Now we deploy Minio for our S3 Storage:
 
     oc apply -f bootstrap/02_minio.yaml        
-```
-    appproject.argoproj.io/minio created
+>    appproject.argoproj.io/minio created
     application.argoproj.io/minio created
-```
 
 And finally we deploy the Elasticsearch for our vector database:
 
     oc apply -f bootstrap/04_elasticsearch.yaml
-```
+>
     application.argoproj.io/elasticsearch created
-```
 
 # Step 2 - Add the Certificates
 
