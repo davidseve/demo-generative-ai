@@ -12,6 +12,7 @@ metadata:
     pod-security.kubernetes.io/warn-version: latest
   annotations:
     openshift.io/description: ''
+    openshift.io/sa.scc.mcs: 's0:c29,c24'
     openshift.io/display-name: demo-generative-ai
     openshift.io/node-selector: beta.kubernetes.io/instance-type=m6i.4xlarge
     openshift.io/sa.scc.supplemental-groups: 1000860000/10000

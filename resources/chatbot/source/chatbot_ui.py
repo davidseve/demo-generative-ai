@@ -56,7 +56,7 @@ def get_models():
     except:
         return None
 
-st.title("Chat with 💡Mistral💡 about OpenShift AI documentation")  
+st.title("Chat with 🪨Granite🪨 about OpenShift AI documentation")  
 if "messages" not in st.session_state:
     st.session_state["messages"] = [{"role": "assistant", 
                                      "content": "How can I help you?"}]
@@ -69,7 +69,7 @@ def memory():
     memory = ConversationBufferWindowMemory(return_messages=True,k=10)
     return memory
 
-model_name = "mistral-7b-openorca.Q4_K_M.gguf" 
+model_name = "granite-3.2-8b-instruct-Q4_K_M.gguf"
 
 prompt = ChatPromptTemplate.from_messages([
     ("system", "You are world class technical advisor."),
