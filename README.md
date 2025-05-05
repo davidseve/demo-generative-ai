@@ -95,7 +95,7 @@ First we update the Data Science Cluster (DSC):
 
 >    dscinitialization.dscinitialization.opendatahub.io/default-dsci configured
 
-Deploy custom-model-serving-runtime for this we need to create the data science project "demo-generative-ai" we can do it from the graphical interface or from the command line:
+Deploy custom-model-serving-runtime for this we need to create the data science project "demo-generative-ai" we do it from the graphical interface:
 
 >    Data science project => Create Project => Name = demo-generative-ai => Create
 
