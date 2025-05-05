@@ -34,11 +34,20 @@ spec:
               protocol: TCP
           env:
             - name: MODEL_ENDPOINT
-              value: '<OPENSHIFT_AI_MODEL_INFERENCE_ENDPOINT>'
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-variables
+                  key: MODEL_ENDPOINT
             - name: ELASTIC_URL
-              value: 'https://<YOUR_ELASTICSEARCH_SERVICE_URL>:9200'
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-variables
+                  key: ELASTIC_URL
             - name: ELASTIC_PASS
-              value: '<YOUR_ELASTICSEARCH_PASSWORD>'
+              valueFrom:
+                configMapKeyRef:
+                  name: environment-variables
+                  key: ELASTIC_PASS
           resources: {}
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
