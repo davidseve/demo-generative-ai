@@ -1,9 +1,9 @@
-FROM python:3.10-slim
+FROM registry.access.redhat.com/rhscl/python-38-rhel7
 
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN yum update && yum -y \
     build-essential \
     libglib2.0-0 \
     libsm6 \
