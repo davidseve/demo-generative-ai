@@ -29,7 +29,7 @@ spec:
   project: elastic-granite-chat-spanish
   sources:
       - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
-        path: resources/chatbot/granite
+        path: resources/chatbot/granite-spanish
         targetRevision: HEAD
   syncPolicy:
     automated:
