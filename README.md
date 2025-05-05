@@ -182,3 +182,16 @@ Now we need to log in to our workbench using the BUTTON on the Openshift-AI UI.
 
 # Step 5 - Deploy Chatbot and connect it to the Elastic Vector DB and the Models
 
+First we need to retrieve the values and populate the corresponding configMaps
+
+For the Granite:
+
+    vim ./resources/chatbot/granite/configmap.yaml
+
+For the Mistral:
+
+    vim ./resources/chatbot/granite/configmap.yaml
+
+![Example edit ConfigMap](resources/images/11_chat-configmap.png)
+
+
