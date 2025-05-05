@@ -194,4 +194,41 @@ For the Mistral:
 
 ![Example edit ConfigMap](resources/images/11_chat-configmap.png)
 
+Then we need to deploy the apps using GitOps for that we, for mistral:
 
+    oc apply -k 
+
+>   appproject.argoproj.io/elastic-granite-chat created
+    application.argoproj.io/elastic-granite-chat created
+
+For Granite:
+
+    oc apply -f bootstrap/06_mistral-chat.yaml 
+>   appproject.argoproj.io/elastic-mistral-chat created
+    application.argoproj.io/elastic-mistral-chat created
+
+We wait till the chatbot is deployed, it can take a few minutes to be ready.
+
+For Granite: 
+
+    watch oc get deployment/elastic-granite-chat -n elastic-granite-chat 
+
+For Mistral:
+
+    watch oc get deployment/elastic-mistral-chat -n elastic-mistral-chat
+
+![Example: Watch for Chatbots readines](resources/images/12_watch-chatbots.png)
+
+Once the deployments are ready we get the route and we can access the chatbots UI.
+
+For Granite:
+
+    oc get route -n elastic-granite-chat
+
+For Mistral:
+
+    oc get route -n elastic-mistral-chat
+
+![Example: Get Routes](resources/images/13_route-4-chatbot.png)
+
+And... CONGRATULATIONS we are finally DONE!
