@@ -1,0 +1,232 @@
+# PIPELINE DEFINITION
+# Name: langchain-vector-index-pipeline
+# Inputs:
+#    es_pass: str
+#    es_url: str
+#    pdf_dir: str
+#    urls: list
+components:
+  comp-embed-and-index:
+    executorLabel: exec-embed-and-index
+    inputDefinitions:
+      artifacts:
+        input_path:
+          artifactType:
+            schemaTitle: system.Artifact
+            schemaVersion: 0.0.1
+      parameters:
+        es_pass:
+          parameterType: STRING
+        es_url:
+          parameterType: STRING
+        index_name:
+          defaultValue: rhoai-docs
+          isOptional: true
+          parameterType: STRING
+  comp-ingest-content:
+    executorLabel: exec-ingest-content
+    inputDefinitions:
+      parameters:
+        pdf_dir:
+          parameterType: STRING
+        urls:
+          parameterType: LIST
+    outputDefinitions:
+      artifacts:
+        output_path:
+          artifactType:
+            schemaTitle: system.Artifact
+            schemaVersion: 0.0.1
+  comp-split-chunk:
+    executorLabel: exec-split-chunk
+    inputDefinitions:
+      artifacts:
+        input_path:
+          artifactType:
+            schemaTitle: system.Artifact
+            schemaVersion: 0.0.1
+    outputDefinitions:
+      artifacts:
+        output_path:
+          artifactType:
+            schemaTitle: system.Artifact
+            schemaVersion: 0.0.1
+deploymentSpec:
+  executors:
+    exec-embed-and-index:
+      container:
+        args:
+        - --executor_input
+        - '{{$}}'
+        - --function_to_execute
+        - embed_and_index
+        command:
+        - sh
+        - -c
+        - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip ||\
+          \ python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
+          \ python3 -m pip install --quiet --no-warn-script-location 'kfp==2.11.0'\
+          \ '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"'  &&\
+          \  python3 -m pip install --quiet --no-warn-script-location 'langchain'\
+          \ 'elasticsearch' 'transformers' 'torch' && \"$0\" \"$@\"\n"
+        - sh
+        - -ec
+        - 'program_path=$(mktemp -d)
+
+
+          printf "%s" "$0" > "$program_path/ephemeral_component.py"
+
+          _KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+
+          '
+        - "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import\
+          \ *\n\ndef embed_and_index(input_path: InputPath(), es_url: str, es_pass:\
+          \ str, index_name: str = \"rhoai-docs\"):\n    import json, os\n    from\
+          \ elasticsearch import Elasticsearch\n    from langchain.vectorstores import\
+          \ ElasticsearchStore\n    from langchain.embeddings.huggingface import HuggingFaceEmbeddings\n\
+          \    from langchain.schema import Document\n\n    with open(os.path.join(input_path,\
+          \ \"chunks.json\")) as f:\n        chunks = [Document(**d) for d in json.load(f)]\n\
+          \n    es = Elasticsearch(\n        es_url,\n        basic_auth=(\"elastic\"\
+          , es_pass),\n        verify_certs=False\n    )\n\n    embeddings = HuggingFaceEmbeddings()\n\
+          \    ElasticsearchStore.from_documents(chunks, embeddings, es_connection=es,\
+          \ index_name=index_name)\n\n"
+        image: python:3.10-slim
+    exec-ingest-content:
+      container:
+        args:
+        - --executor_input
+        - '{{$}}'
+        - --function_to_execute
+        - ingest_content
+        command:
+        - sh
+        - -c
+        - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip ||\
+          \ python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
+          \ python3 -m pip install --quiet --no-warn-script-location 'kfp==2.11.0'\
+          \ '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"'  &&\
+          \  python3 -m pip install --quiet --no-warn-script-location 'langchain'\
+          \ 'langchain-community' 'elasticsearch' 'transformers' && \"$0\" \"$@\"\n"
+        - sh
+        - -ec
+        - 'program_path=$(mktemp -d)
+
+
+          printf "%s" "$0" > "$program_path/ephemeral_component.py"
+
+          _KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+
+          '
+        - "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import\
+          \ *\n\ndef ingest_content(pdf_dir: str, urls: list, output_path: OutputPath()):\n\
+          \    import os, json\n    from langchain.document_loaders import PyPDFLoader,\
+          \ WebBaseLoader\n\n    docs = []\n    if pdf_dir and os.path.isdir(pdf_dir):\n\
+          \        for file in os.listdir(pdf_dir):\n            if file.endswith(\"\
+          .pdf\"):\n                loader = PyPDFLoader(os.path.join(pdf_dir, file))\n\
+          \                docs.extend(loader.load())\n\n    if urls:\n        loader\
+          \ = WebBaseLoader(urls)\n        docs.extend(loader.load())\n\n    os.makedirs(output_path,\
+          \ exist_ok=True)\n    with open(os.path.join(output_path, \"docs.json\"\
+          ), \"w\") as f:\n        json.dump([doc.dict() for doc in docs], f)\n\n"
+        image: python:3.10-slim
+    exec-split-chunk:
+      container:
+        args:
+        - --executor_input
+        - '{{$}}'
+        - --function_to_execute
+        - split_chunk
+        command:
+        - sh
+        - -c
+        - "\nif ! [ -x \"$(command -v pip)\" ]; then\n    python3 -m ensurepip ||\
+          \ python3 -m ensurepip --user || apt-get install python3-pip\nfi\n\nPIP_DISABLE_PIP_VERSION_CHECK=1\
+          \ python3 -m pip install --quiet --no-warn-script-location 'kfp==2.11.0'\
+          \ '--no-deps' 'typing-extensions>=3.7.4,<5; python_version<\"3.9\"'  &&\
+          \  python3 -m pip install --quiet --no-warn-script-location 'langchain'\
+          \ && \"$0\" \"$@\"\n"
+        - sh
+        - -ec
+        - 'program_path=$(mktemp -d)
+
+
+          printf "%s" "$0" > "$program_path/ephemeral_component.py"
+
+          _KFP_RUNTIME=true python3 -m kfp.dsl.executor_main                         --component_module_path                         "$program_path/ephemeral_component.py"                         "$@"
+
+          '
+        - "\nimport kfp\nfrom kfp import dsl\nfrom kfp.dsl import *\nfrom typing import\
+          \ *\n\ndef split_chunk(input_path: InputPath(), output_path: OutputPath()):\n\
+          \    import json, os\n    from langchain.text_splitter import RecursiveCharacterTextSplitter\n\
+          \    from langchain.schema import Document\n\n    with open(os.path.join(input_path,\
+          \ \"docs.json\")) as f:\n        raw_docs = json.load(f)\n\n    docs = [Document(**d)\
+          \ for d in raw_docs]\n    splitter = RecursiveCharacterTextSplitter(chunk_size=1000,\
+          \ chunk_overlap=100)\n    split_docs = splitter.split_documents(docs)\n\n\
+          \    os.makedirs(output_path, exist_ok=True)\n    with open(os.path.join(output_path,\
+          \ \"chunks.json\"), \"w\") as f:\n        json.dump([d.dict() for d in split_docs],\
+          \ f)\n\n"
+        image: python:3.10-slim
+pipelineInfo:
+  name: langchain-vector-index-pipeline
+root:
+  dag:
+    tasks:
+      embed-and-index:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-embed-and-index
+        dependentTasks:
+        - split-chunk
+        inputs:
+          artifacts:
+            input_path:
+              taskOutputArtifact:
+                outputArtifactKey: output_path
+                producerTask: split-chunk
+          parameters:
+            es_pass:
+              componentInputParameter: es_pass
+            es_url:
+              componentInputParameter: es_url
+        taskInfo:
+          name: embed-and-index
+      ingest-content:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-ingest-content
+        inputs:
+          parameters:
+            pdf_dir:
+              componentInputParameter: pdf_dir
+            urls:
+              componentInputParameter: urls
+        taskInfo:
+          name: ingest-content
+      split-chunk:
+        cachingOptions:
+          enableCache: true
+        componentRef:
+          name: comp-split-chunk
+        dependentTasks:
+        - ingest-content
+        inputs:
+          artifacts:
+            input_path:
+              taskOutputArtifact:
+                outputArtifactKey: output_path
+                producerTask: ingest-content
+        taskInfo:
+          name: split-chunk
+  inputDefinitions:
+    parameters:
+      es_pass:
+        parameterType: STRING
+      es_url:
+        parameterType: STRING
+      pdf_dir:
+        parameterType: STRING
+      urls:
+        parameterType: LIST
+schemaVersion: 2.1.0
+sdkVersion: kfp-2.11.0

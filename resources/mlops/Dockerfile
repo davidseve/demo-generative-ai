@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhscl/python-38-rhel7
+FROM registry.redhat.io/ubi9/python-311:latest
 
 WORKDIR /app
 
