@@ -4,6 +4,9 @@ kind: Kustomization
 
 namespace: istio-system
 
+commonAnnotations:
+  argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+
 resources:
   - namespace.yaml
   - servicemesh-controlplane.yaml

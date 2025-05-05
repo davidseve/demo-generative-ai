@@ -116,37 +116,38 @@ We have to deploy the serving runtime from the UI:
 
 ![Adding Llama Serving Runtime](resources/images/07_adding-llama-runtime.png)
 
-Now deploy the Mistral Model, start by filling the data: 
+First we need to create the connection to the minio to retrieve the models:
 
->   Model name = mistral7b
-    Serving runtime = LlamaCPP
-    Model framework = any
-    Deployment Mode = Standard
-    Model server size = Large
-    Select the add external Route
-    Select Create Connection => S3 Compatible
+    Select Connections => Create connection => S3 Compatible
     Name = models
     Access key = minio
     Secret key = minio123
     Endpoint = Your Minio API URL
     Bucket = models
+
+![Create Minio Connection](resources/images/08_minio-connection.png)
+
+Now deploy the Mistral Model, start by filling the data: 
+
+>   Model name = mistral7b
+    Serving runtime = mistral7b
+    Model framework = any
+    Deployment Mode = Standard
+    Model server size = Large
     Path = mistral7b
+
+![Deploy the Mistral 7B Model](resources/images/09_mistral-model-deploy.png)
 
 And finally we deploy the Granite Model, start by filling the data:
 
 >   Model name = granite3b
-    Serving runtime = LlamaCPP    
+    Serving runtime = granite3b    
     Model framework = any    
     Deployment Mode = Standard    
-    Model server size = Large    
-    Select the add external Route    
-    Select Create Connection => S3 Compatible    
-    Name = models    
-    Access key = minio    
-    Secret key = minio123    
-    Endpoint = Your Minio API URL    
-    Bucket = models
+    Model server size = Large     
     Path = granite3b
+
+![Deploy the Granite 3B Model](resources/images/10_granite-model-deploy.png)
 
 We'll now create a workbench where we can upload a Jupyter notebook to ingest data into the Elasticsearch vector database, we are going to do this in our Project (demo-generative-ai)
 

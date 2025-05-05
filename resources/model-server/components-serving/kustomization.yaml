@@ -12,6 +12,8 @@ patches:
   - path: patch-dsc-init.yaml
     target:
       kind: DSCInitialization
-
+      
+commonAnnotations:
+  argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 # # components:
 # #   - ../wait-for-servicemesh

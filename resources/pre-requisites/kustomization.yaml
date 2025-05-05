@@ -5,7 +5,9 @@ kind: Kustomization
 labels:
   - pairs:
       app.kubernetes.io/instance: pre-requisites
-
+commonAnnotations:
+  argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  
 resources:
 
   # Support for GPU Acceleration
