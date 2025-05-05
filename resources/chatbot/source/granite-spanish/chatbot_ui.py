@@ -103,8 +103,10 @@ db = ElasticsearchStore.from_documents(
     es_connection=es,
 )
 
-template = """<s>[INST] <<SYS>>
-You are an intelligent, honest, and reliable AI assistant.
+template = """[INST] 
+
+<<SYS>>
+You are an intelligent, honest, reliable AI assistant and you will answer in Spanish.
 
 You will be provided with a **question** and a supporting **context**. Your task is to generate the most accurate and helpful response possible based only on the information in the context. 
 - If the context does not contain enough information to answer, clearly state that you don't have sufficient data.
@@ -115,8 +117,9 @@ Always strive to be concise, informative, and respectful in your replies.
 <</SYS>>
 
 Question: {question}
-Context: {context} [/INST]
-"""
+Context: {context} 
+
+[/INST]"""
 QA_CHAIN_PROMPT = ChatPromptTemplate.from_template(template)
 
 chain = RetrievalQA.from_chain_type(llm,

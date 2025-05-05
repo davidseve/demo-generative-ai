@@ -1,0 +1,44 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  name: elastic-granite-chat-spanish
+  namespace: openshift-gitops
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  name: elastic-granite-chat-spanish
+  namespace: openshift-gitops
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  project: elastic-granite-chat-spanish
+  sources:
+      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+        path: resources/chatbot/granite
+        targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: elastic-granite-chat-spanish
+      namespace: elastic-granite-chat-spanish
+      jsonPointers:
+        - /spec/template/spec/containers/0/env
