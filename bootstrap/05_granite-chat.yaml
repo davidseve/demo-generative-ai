@@ -28,7 +28,7 @@ spec:
     server: https://kubernetes.default.svc
   project: elastic-granite-chat
   sources:
-      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+      - repoURL: https://github.com/davidseve/demo-generative-ai.git
         path: resources/chatbot/granite
         targetRevision: HEAD
   syncPolicy:

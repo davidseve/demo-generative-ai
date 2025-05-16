@@ -1,0 +1,15 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: redhat-ods-applications
+  labels:
+    argocd.argoproj.io/managed-by: openshift-gitops
+    kubernetes.io/metadata.name: redhat-ods-applications
+    opendatahub.io/dashboard: 'true'
+  annotations:
+    openshift.io/description: 'Auto-generated DataScienceProject for User: redhat'
+    openshift.io/display-name: redhat-ods-applications
+    openshift.io/requester: redhat
+spec:
+  finalizers:
+    - kubernetes

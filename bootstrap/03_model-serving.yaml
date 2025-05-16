@@ -28,13 +28,13 @@ spec:
     server: https://kubernetes.default.svc
   project: model-serving
   sources:
-      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+      - repoURL: https://github.com/davidseve/demo-generative-ai.git
         path: resources/openshift-servicemesh
         targetRevision: HEAD
-      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+      - repoURL: https://github.com/davidseve/demo-generative-ai.git
         path: resources/openshift-serverless/knative-eventing
         targetRevision: HEAD
-      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+      - repoURL: https://github.com/davidseve/demo-generative-ai.git
         path: resources/openshift-serverless/knative-serving
         targetRevision: HEAD
   syncPolicy:

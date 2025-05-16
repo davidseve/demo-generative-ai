@@ -28,7 +28,7 @@ spec:
     server: https://kubernetes.default.svc
   project: pre-requisites
   sources:
-      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+      - repoURL: https://github.com/davidseve/demo-generative-ai.git
         path: resources/pre-requisites
         targetRevision: HEAD
   syncPolicy:

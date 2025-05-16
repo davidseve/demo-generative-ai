@@ -28,7 +28,7 @@ spec:
     server: https://kubernetes.default.svc
   project: elastic-mistral-chat
   sources:
-      - repoURL: https://github.com/Everything-is-Code/demo-generative-ai.git
+      - repoURL: https://github.com/davidseve/demo-generative-ai.git
         path: resources/chatbot/mistral
         targetRevision: HEAD
   syncPolicy:
