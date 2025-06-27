@@ -5,8 +5,8 @@ metadata:
   name: environment-variables
   namespace: elastic-mistral-chat
 data:
-  MODEL_ENDPOINT: <OPENSHIFT_AI_MODEL_INFERENCE_ENDPOINT>
-  ELASTIC_URL: 'https://<YOUR_ELASTICSEARCH_SERVICE_URL>:9200'
-  ELASTIC_PASS: <YOUR_ELASTICSEARCH_PASSWORD>
+  MODEL_ENDPOINT: 'http://mistral7b-predictor.demo-generative-ai.svc.cluster.local:8001'
+  ELASTIC_URL: 'https://172.30.182.134:9200'
+  ELASTIC_PASS: '5s16FnrH5JMM277NuS50Gsw5'
 binaryData: {}
 immutable: false
