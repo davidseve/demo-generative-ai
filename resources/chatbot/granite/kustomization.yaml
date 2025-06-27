@@ -11,4 +11,4 @@ resources:
 - service.yaml
 - route.yaml
 - namespace.yaml
-# - configmap.yaml
+- configmap.yaml
